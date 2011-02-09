@@ -1,9 +1,19 @@
 require 'time'
 
+# The base class for all AWS requests. You should not use this class directly.
+# Its subclasses provide the functionality for specific types of AWS request.
+# This class handles basic configuration, header management, URI generation,
+# and authentication.
 class Naws::Request
 
   attr_reader :path, :method, :response_class
 
+  # Constructs a new AWS request object.
+  # +context+ must be a Naws::Context.
+  # +params+ is a hash of arguments used to construct the XML body or query 
+  #   string.
+  # +options+ contains any values used to configure the request which are not
+  #   included in the XML body or query string (headers, for example).
   def initialize(context, params = {}, options = {})
     @context = context
     @params = params.dup
@@ -15,23 +25,24 @@ class Naws::Request
     freeze
   end
 
+  # Returns a frozen hash of HTTP headers for this request. 
   def headers
     @output_headers ||= begin
       h = @headers.dup
       h["x-amz-date"] = date_header
       h["X-Amzn-Authorization"] = auth_header
-      h
+      h.freeze
     end
   end
 
-  def to_xml
-    ""
-  end
-
+  # Forwards this request to its context to be executed via the selected
+  # transport.
   def execute
     @context.execute_request(self)
   end
 
+  # The URI to which this request will be sent, including the query string.
+  # Returns a URI object.
   def uri
     new_uri = @context.uri.dup
     new_uri.path = new_uri.path + @path
