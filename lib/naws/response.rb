@@ -1,0 +1,3 @@
+class Naws::Response
+
+end
