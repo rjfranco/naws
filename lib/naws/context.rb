@@ -11,7 +11,7 @@ class Naws::Context
     end
     self.uri = options[:uri] if options[:uri]
     self.xmlns = options[:xmlns] if options[:xmlns]
-    self.transport = options[:transport] if options[:transport]
+    self.transport = resolve_transport(options[:transport]) if options[:transport]
   end
 
   attr_accessor :xmlns
@@ -48,9 +48,12 @@ class Naws::Context
     resolve_request_class("#{name}_request").new(self, params, options)
   end
 
-  def execute_request(request)
-    # TODO: some HTTPing
-    request.response_class.new
+  def execute(name, params = {}, options = {}, &blk)
+    execute_request(request(name, params, options), &blk)
+  end
+
+  def execute_request(request, &blk)
+    transport.execute(request, request.response_class, &blk)
   end
 
   # TODO: it should be possible to calibrate this to the published AWS time
@@ -63,9 +66,17 @@ class Naws::Context
     def resolve_request_class(name)
       Naws::Util.constantize(const_prefix + "::" + Naws::Util.camelize(name))
     end
+    
+    def resolve_transport(transport)
+      if transport.kind_of?(Symbol)
+        resolve_transport_class(transport).new
+      else
+        transport
+      end
+    end
 
     def resolve_transport_class(name)
-      Naws::Util.constantize("Naws::Transport::" + Naws::Util.camelize("#{name}_transport"))
+      Naws::Util.constantize("Naws::" + Naws::Util.camelize("#{name}_transport"))
     end
 
     def const_prefix
