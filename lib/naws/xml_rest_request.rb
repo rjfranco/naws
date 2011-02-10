@@ -10,7 +10,7 @@ class Naws::XmlRestRequest < Naws::Request
     xml x
   end
  
-  def http_body
+  def body
     to_xml
   end
 
@@ -19,5 +19,11 @@ class Naws::XmlRestRequest < Naws::Request
     def xml(x)
       raise NotImplementedError, "Need to implement #xml if you're inheriting from XmlRestRequest"
     end
+
+    def add_headers(h)
+      h["Content-Type"] = "text/xml"
+      super
+    end
+
 
 end

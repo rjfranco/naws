@@ -29,8 +29,7 @@ class Naws::Request
   def headers
     @output_headers ||= begin
       h = @headers.dup
-      h["x-amz-date"] = date_header
-      h["X-Amzn-Authorization"] = auth_header
+      add_headers(h)
       h.freeze
     end
   end
@@ -47,6 +46,10 @@ class Naws::Request
     new_uri = @context.uri.dup
     new_uri.path = new_uri.path + @path
     new_uri
+  end
+
+  def body
+    nil
   end
 
   protected
@@ -70,6 +73,12 @@ class Naws::Request
     def auth_header
       auth = @context.authentication
       raise Naws::NoAuthenticationError unless auth
-      "AWS3-HTTPS AWSAccessKeyId=#{auth.access_key_id},Algorithm=#{auth.algorithm},Signature=#{auth.aws_signature(date_header)}"
+      "AWS3-HTTPS AWSAccessKeyId=#{auth.access_key_id},Algorithm=Hmac#{auth.algorithm},Signature=#{auth.aws_signature(date_header)}"
     end
+
+    def add_headers(h)
+      h["x-amz-date"] = date_header
+      h["X-Amzn-Authorization"] = auth_header
+    end
+
 end

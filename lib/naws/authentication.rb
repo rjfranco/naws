@@ -1,5 +1,5 @@
 require 'naws'
-require 'digest/sha2'
+require 'openssl'
 
 class Naws::Authentication
 
@@ -11,14 +11,12 @@ class Naws::Authentication
   end
 
   def algorithm
-    "SHA256"
+    "SHA1"
   end
 
   def aws_signature(string)
-    hash = Digest::SHA2.new
-    hash << string
-    hash << secret_access_key
-    [hash.to_s].pack("m").chomp
+    hash = OpenSSL::Digest::Digest.new('sha1')
+    [OpenSSL::HMAC.digest(hash, secret_access_key, string)].pack("m").chomp
   end
 
   protected

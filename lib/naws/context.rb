@@ -1,5 +1,4 @@
 require 'uri'
-require 'naws-route53/create_hosted_zone_request'
 
 class Naws::Context
 
