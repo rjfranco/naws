@@ -1,4 +1,5 @@
 require 'naws/request'
+require 'cgi'
 
 class Naws::GetRequest < Naws::Request
 

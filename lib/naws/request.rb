@@ -44,7 +44,7 @@ class Naws::Request
   # Returns a URI object.
   def uri
     new_uri = @context.uri.dup
-    new_uri.path = new_uri.path + @path
+    new_uri.path = new_uri.path + path
     new_uri
   end
 
@@ -52,7 +52,17 @@ class Naws::Request
     nil
   end
 
+  def path
+    interpolated_path
+  end
+
   protected
+
+    def interpolated_path
+      @path.gsub(/:([a-z0-9_]+)/) {
+        @params[$1.to_sym]
+      }
+    end
 
     def set_path_and_method
       begin

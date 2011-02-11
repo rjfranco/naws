@@ -12,6 +12,10 @@ class Naws::XmlResponse < Naws::Response
     @document = Naws::XmlResponse.parser_class.new(@body)
   end
 
+  def xpath_collection(path, map)
+    @document.collection(path, map)
+  end
+
   def xpath_each(path, &blk)
     @document.each(path, &blk)
   end

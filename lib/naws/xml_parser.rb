@@ -10,6 +10,10 @@ class Naws::XmlParser
   end
   protected :initialize
 
+  def collection(path, map)
+    raise NotImplementedError, "#hash not implemented in this parser!"
+  end
+
   def each(path, &blk)
     raise NotImplementedError, "#each not implemented in this parser!"
   end

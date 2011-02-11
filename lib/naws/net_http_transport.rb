@@ -13,9 +13,7 @@ class Naws::NetHttpTransport < Naws::Transport
   protected
 
     def sync_execute(request)
-      p request.uri
       http = Net::HTTP.new(request.uri.host, request.uri.port)
-      p [request.uri.host, request.uri.port, request.uri.request_uri]
       http.use_ssl = true
       http.verify_mode = VERIFY_MODE
       response = nil
