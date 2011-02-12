@@ -1,0 +1,15 @@
+= Naws
+== A thin AWS library
+
+This gem is still under development. If you want to see where I'm going with
+this, look at naws-route53[http://github.com/mboeh/naws-route53] and
+naws-route53-models[http://github.com/mboeh/naws-route53-models].
+
+The rationale of this gem is to provide a common understructure for other
+libraries interacting with Amazon Web Services which does not tie you to a
+single concurrency model, HTTP library, etc. While higher-level interfaces
+similar to aws-s3 are supported (again, see naws-route53-models), the intention
+of Naws is to give the user access to the underlying XML and HTTP as well.
+
+More specs and documentation are coming soon. This gem is not ready for
+production use, but I welcome any input.
