@@ -9,11 +9,11 @@ class Naws::Request
   attr_reader :path, :method, :response_class
 
   # Constructs a new AWS request object.
-  # +context+ must be a Naws::Context.
-  # +params+ is a hash of arguments used to construct the XML body or query 
-  #   string.
-  # +options+ contains any values used to configure the request which are not
-  #   included in the XML body or query string (headers, for example).
+  # +context+:: must be a Naws::Context.
+  # +params+:: a hash of arguments used to construct the XML body or query 
+  # string.
+  # +options+:: any values used to configure the request which are not
+  # included in the XML body or query string (headers, for example).
   def initialize(context, params = {}, options = {})
     @context = context
     @params = params.dup
@@ -47,7 +47,8 @@ class Naws::Request
     new_uri.path = new_uri.path + path
     new_uri
   end
-
+  
+  # The body which will be included in a PUT or POST request.
   def body
     nil
   end

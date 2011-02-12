@@ -3,7 +3,14 @@ require 'naws/threaded_async_transport'
 require 'net/http'
 require 'net/https'
 
+# A Naws Transport implemented using Ruby's built-in Net::HTTP library.
+#
+# Asynchronous execution is supported with a *big caveat*: it is implemented
+# using Ruby threading, which in some versions of Ruby will be useless or worse
+# than useless for this purpose. I haven't yet intensively tested threaded
+# async. User beware.
 class Naws::NetHttpTransport < Naws::Transport
+  include Naws::ThreadedAsyncTransport
 
   # Please make sure you understand the security issues if you change this.
   # It's a constant so you'll have to make noise to change it.
@@ -12,6 +19,8 @@ class Naws::NetHttpTransport < Naws::Transport
 
   protected
 
+    # TODO: This should support both HTTP and HTTPS operation. Right now, it's
+    # HTTPS only.
     def sync_execute(request)
       http = Net::HTTP.new(request.uri.host, request.uri.port)
       http.use_ssl = true
