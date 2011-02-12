@@ -8,8 +8,8 @@ class Naws::XmlResponse < Naws::Response
   def self.parser_class=(v) @@parser_class = v end
 
   def initialize(options = {})
+    @document = Naws::XmlResponse.parser_class.new(options[:body])
     super
-    @document = Naws::XmlResponse.parser_class.new(@body)
   end
 
   def xpath_collection(path, map)
@@ -25,5 +25,16 @@ class Naws::XmlResponse < Naws::Response
   end
   
   alias [] xpath
+
+  protected
+
+    def handle_error
+      raise Naws::UpstreamError.new(upstream_error_message)
+    end
+
+    def upstream_error_message
+      "#{xpath("//Error/Code")}: #{xpath("//Error/Message")}"
+    end
+
 
 end

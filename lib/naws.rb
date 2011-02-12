@@ -14,6 +14,7 @@ module Naws
   NoAuthenticationError = NawsError.build("No authentication was assigned to this context")
   NoContextError = NawsError.build("No context was assigned to this request")
   NoTransportError = NawsError.build("No transport was assigned to this context")
+  UpstreamError = NawsError.build("Unknown AWS error")
 end
 
 require 'naws/util'
