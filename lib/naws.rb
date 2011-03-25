@@ -1,12 +1,14 @@
 module Naws
   class NawsError < StandardError
-    @@default_message = nil
     def initialize(message = nil)
-      super(message || @@default_message)
+      super(message || self.class.default_message)
     end
     def self.build(message)
       Class.new(self) do
-        @@default_message = message
+        class << self
+          attr_accessor :default_message
+        end
+        self.default_message = message
       end
     end
   end
