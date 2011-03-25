@@ -8,7 +8,7 @@ class Naws::XmlResponse < Naws::Response
   def self.parser_class=(v) @@parser_class = v end
 
   def initialize(options = {})
-    @document = Naws::XmlResponse.parser_class.new(options[:body])
+    @document = Naws::XmlResponse.parser_class.new(options[:body].gsub('\052', '*'))
     super
   end
 
