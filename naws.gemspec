@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.description = %q{A (currently experimental) library providing tools to interact with Amazon Web Services}
 
   s.rubyforge_project = "naws"
-  s.add_dependency 'builder', '~> 2.0'
+  s.add_dependency 'builder', '~> 3.0.0'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
